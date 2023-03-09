@@ -1,23 +1,21 @@
-import logo from './logo.svg';
 import './App.css';
+import { Suspense } from 'react';
+import {fetchData} from './fetchData.js'
+
+const apiData = fetchData("https://jsonplaceholder.typicode.com/users");
 
 function App() {
+  const data = apiData.read();
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Fetch like a pro</h1>
+      <Suspense fallback={<div>Loading... </div>}>
+        <ul className='card'>
+          {data?.map((user) => (
+            <li key={user.id}>{user.name}</li>
+          ))}
+        </ul>
+      </Suspense>
     </div>
   );
 }
